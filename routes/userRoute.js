@@ -81,12 +81,12 @@ router.post('/users/login', function(req,res){
     Users.findOne({phone:phone})
     .then(function(userData){
         if(userData===null){
-            return res.status(403).json({message : "User not found!"})
+            return res.status(200).json({success : false})
         }
         
         bcrypt.compare(password, userData.password , function(error,result){
             if(result===false){
-                return res.status(403).json({message : "invalid credentials!"})
+                return res.status(200).json({success : false})
             }
             
             //check login credentials
@@ -117,7 +117,7 @@ router.delete('/users/delete/:id' , auth.verifyUser, function(req,res){
     
     const id = req.params.id;
 
-    Students.deleteOne({_id:id})
+    Users.deleteOne({_id:id})
     .then(function(){
         res.status(201).json({success:true , message:"deleted successfully" })
     })
